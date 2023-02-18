@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>weathar app</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .box {
+        border: 1px solid cornflowerblue;
+        width: 300px;
+        margin: 60px auto;
+        border-radius: 30px;
+        height: 400px;
+        background-color: rgb(137, 166, 218);
+        box-shadow: 8px 8px 8px grey;
+        position: relative;
+        overflow: hidden;
+      }
+      #wathericon {
+        margin-top: 60px;
+        margin-left: 120px;
+        font-size: 70px;
+      }
+      .info {
+        /* border: 1px solid red; */
+
+        margin-top: 80px;
+      }
+      .locti {
+        margin-left: 50px;
+      }
+      #date {
+        margin-left: 75px;
+        color: rgb(95, 69, 69);
+        font-weight: 700;
+      }
+
+      .temp {
+        margin-top: 20px;
+        margin-left: 100px;
+      }
+      .tem-mim-mx {
+        font-size: 15px;
+        margin-left: 80px;
+        color: rgb(95, 69, 69);
+        font-weight: 700;
+      }
+      .waw-one {
+        opacity: 0.3;
+        position: absolute;
+        top: 200px;
+        width: 600px;
+        height: 600px;
+        background-color: white;
+        margin-left: -150px;
+        transform-origin: 50% 48%;
+        border-radius: 43%;
+        animation: drift 3000ms infinite linear;
+        z-index: 1;
+      }
+      .waw-three {
+        /* width: 600px; */
+        /* height: 700px; */
+        animation: drift 5000ms infinite linear;
+        z-index: 2 !important;
+        opacity: 0.2;
+      }
+      .waw-two {
+        animation: drift 7000ms infinite linear;
+        opacity: 0.1;
+        z-index: 3 !important;
+      }
+      .box::after {
+        content: "";
+        display: block;
+        left: 0;
+        right: 0;
+        width: 100%;
+        width: 100%;
+        z-index: 11;
+        transform: translate3d(0, 0, 0);
+      }
+      @keyframes drift {
+        from {
+          transform: rotate(0deg);
+        }
+        from {
+          transform: rotate(360deg);
+        }
+      }
+      .fa-street-view {
+        animation: rotates 3s linear infinite alternate;
+      }
+      @keyframes rotates {
+        from {
+          transform: translateX(-0.5rem);
+        }
+        to {
+          transform: translateX(0-0.5rem);
+        }
+      }
+      #wathericon .fa-sun {
+        animation: fas-anime 3s linear infinite alternate;
+      }
+      @keyframes fas-anime {
+        from {
+          transform: scale(0.8);
+        }
+        to {
+          transform: scale(1.2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="waw-one"></div>
+      <div class="waw-two"></div>
+      <div class="waw-three"></div>
+      <div id="wathericon">
+        <i class="fa-solid fa-sun" style="color: #eccc68"></i>
+      </div>
+      <div class="info">
+        <h2 class="locti">
+          <i class="fa-solid fa-street-view"></i>{%loction%},{%country%}
+        </h2>
+        <p id="date"></p>
+        <h1 class="temp">{%tempval%}&deg;C</h1>
+        <h3 class="tem-mim-mx">
+          mim {%tempvalmin%}&deg;C | max{%tempvalmax%}&deg;C
+        </h3>
+      </div>
+    </div>
+    <script>
+      const curdate = document.getElementById("date");
+      const weathercon = document.getElementById("wathericon");
+      const tempstatus = "{tempstatus}";
+      if (tempstatus == "Clear") {
+        weathercon.innerHTML =
+          "<i class='fa-solid fa-sun' style='color: #eccc68'></i>";
+      } else if (tempstatus == "Rainy") {
+        weathercon.innerHTML = "<i class='fa-solid fa-cloud-rain' ></i>";
+      }
+      const getcurrentday = () => {
+        var weekday = new Array(7);
+        weekday[0] = "Sun";
+        weekday[1] = "Mon";
+        weekday[2] = "Tue";
+        weekday[3] = "Wed";
+        weekday[4] = "Thur";
+        weekday[5] = "Fri";
+        weekday[6] = "Sat";
+        // weekday[7]="Sunday";
+        let currettime = new Date();
+        let day = weekday[currettime.getDay()];
+        return day;
+      };
+      const getcurrettime = () => {
+        let moths = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apri",
+          "May",
+          "June",
+          "July",
+          "Agu",
+          "Agu",
+          "Sept",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        let now = new Date();
+        let mont = moths[now.getMonth()];
+        let days = now.getDate();
+
+        let hours = now.getHours();
+        let mins = now.getMinutes();
+
+        let peris = "AM";
+        if (hours > 11) {
+          peris = "PM";
+          if (hours > 12) hours -= 12;
+        }
+        if (mins < 10) {
+          mins = "0" + mins;
+        }
+        return `${mont} ${days} | ${hours}:${mins}${peris}`;
+      };
+      curdate.innerHTML = getcurrentday() + " |" + getcurrettime();
+    </script>
+  </body>
+</html>
